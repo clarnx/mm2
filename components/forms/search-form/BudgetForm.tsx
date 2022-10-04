@@ -1,6 +1,6 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { Button } from '@material-tailwind/react';
-import { useForm } from 'react-hook-form';
+import { Button, Input } from '@material-tailwind/react';
+import { Controller, useForm } from 'react-hook-form';
 interface IBudgetForm {
   formStep: number;
   setFormStep: React.Dispatch<React.SetStateAction<number>>;
@@ -14,11 +14,14 @@ export const BudgetForm = ({
   setBudget,
 }: IBudgetForm) => {
   const {
-    register,
+    control,
     handleSubmit,
     formState: { isValid, errors, isDirty },
   } = useForm({
-    defaultValues: budget,
+    defaultValues: budget || {
+      min_budget: '',
+      max_budget: '',
+    },
     mode: 'all',
   });
 
@@ -45,15 +48,19 @@ export const BudgetForm = ({
             $4,900.00 USD is the avarage budget for Part-Time (20h) jobs with
             similar skills
           </small>
-          <div className="flex justify-between gap-10 flex-wrap">
+          <div className="flex justify-between gap-10 flex-wrap pt-4">
             <div className="flex flex-col flex-grow">
-              <label htmlFor="job_details">Minimun budget (USD)</label>
-              <input
-                className="border border-gray-600 app-input"
-                type="number"
-                {...register('min_budget', {
-                  required: 'This field is required',
-                })}
+              <Controller
+                name="min_budget"
+                control={control}
+                rules={{ required: 'This is required.' }}
+                render={({ field }) => (
+                  <Input
+                    type={'number'}
+                    label="Minimun budget (USD)"
+                    {...field}
+                  />
+                )}
               />
               <ErrorMessage
                 as={'span'}
@@ -63,13 +70,17 @@ export const BudgetForm = ({
               />
             </div>
             <div className="flex flex-col flex-grow">
-              <label htmlFor="job_details">Max budget (USD)</label>
-              <input
-                className="border border-gray-600 app-input"
-                type="number"
-                {...register('max_budget', {
-                  required: 'This field is required',
-                })}
+              <Controller
+                name="max_budget"
+                control={control}
+                rules={{ required: 'This is required.' }}
+                render={({ field }) => (
+                  <Input
+                    type={'number'}
+                    label="Minimun budget (USD)"
+                    {...field}
+                  />
+                )}
               />
               <ErrorMessage
                 as={'span'}

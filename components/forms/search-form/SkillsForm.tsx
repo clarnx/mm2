@@ -1,7 +1,8 @@
-import { Button } from '@material-tailwind/react';
+import { Button, Option, Select } from '@material-tailwind/react';
 import { useState } from 'react';
 import { IoMdClose } from 'react-icons/io';
 import { skillsMock } from '../../../lib/mocks/skills.mock';
+
 interface ISkillForm {
   formStep: number;
   setFormStep: React.Dispatch<React.SetStateAction<number>>;
@@ -15,14 +16,12 @@ export const SkillsForm = ({
   setSkills,
   setFormStep,
 }: ISkillForm) => {
-  const [selectValue, setSelectValue] = useState('');
   const [error, setError] = useState<string | null>(null);
 
-  const addSkillToSelected = (value: string) => {
+  const addSkillToSelected = (value: string | any) => {
     setError(null);
     if (!skills.includes(value)) {
       setSkills((prev) => [...prev, value]);
-      setSelectValue('');
     }
   };
 
@@ -43,28 +42,26 @@ export const SkillsForm = ({
       <div className="flex flex-col gap-5">
         <h2 className="text-xl font-semibold">Skills for this role</h2>
         <div>
-          <select
-            onChange={(e) => addSkillToSelected(e.target.value)}
+          <Select
+            value=""
+            onChange={(e) => addSkillToSelected(e)}
             id="skills"
-            className={`border border-gray-600 capitalize px-2 py-2 w-full outline-none ${
-              error && 'border-red-300'
-            }`}
-            value={selectValue}
+            className={` ${error && 'border-red-300'}`}
           >
             <option value="" disabled></option>
             {skillsMock.map((skill, index) => (
-              <option className="capitalize " key={index} value={skill}>
+              <Option className="capitalize " key={index} value={skill}>
                 {skill}
-              </option>
+              </Option>
             ))}
-          </select>
+          </Select>
           {error && <small className="text-red-300">{error}</small>}
         </div>
         <div className="flex gap-3 text-xs flex-wrap">
           {skillsMock?.map((skill, index) => (
             <span
               onClick={() => addSkillToSelected(skill)}
-              className="bg-white border border-app-black text-app-black  capitalize px-2 py-1 rounded-md transition-all hover:shadow-sm cursor-pointer"
+              className="bg-white border border-app-black border-dashed text-app-black  capitalize px-2 py-1 rounded-md transition-all hover:shadow-sm cursor-pointer"
               key={index}
             >
               {skill} +

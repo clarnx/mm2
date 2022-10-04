@@ -1,6 +1,12 @@
 import { ErrorMessage } from '@hookform/error-message';
-import { Button } from '@material-tailwind/react';
-import { useForm } from 'react-hook-form';
+import {
+  Button,
+  Input,
+  Option,
+  Select,
+  Textarea,
+} from '@material-tailwind/react';
+import { Controller, useForm } from 'react-hook-form';
 interface IJobDetails {
   formStep: number;
   setFormStep: React.Dispatch<React.SetStateAction<number>>;
@@ -15,11 +21,19 @@ export const JobDetails = ({
   jobDetails,
 }: IJobDetails) => {
   const {
-    register,
+    control,
     handleSubmit,
     formState: { isValid, errors, isDirty },
   } = useForm({
-    defaultValues: jobDetails,
+    defaultValues: jobDetails || {
+      rol_types: '',
+      job_title: '',
+      starting_date: '',
+      years_experience: '',
+      time_zone: '',
+      overlapping_hours: '',
+      job_description: '',
+    },
     mode: 'all',
   });
 
@@ -43,29 +57,28 @@ export const JobDetails = ({
         <div className="flex flex-col  gap-3">
           <h2 className="text-xl font-semibold">Job Details</h2>
           <div className="flex flex-col">
-            <label htmlFor="rol-types">Role type*</label>
-            <select
-              defaultValue={''}
-              className="app-input w-full outline-none sm:w-1/2"
-              {...register('rol_types', {
-                required: 'this field is required',
-              })}
-            >
-              <option value="" disabled>
-                Choose an option
-              </option>
-              <option value="part-time"> Part-Time (20H) </option>
-              <option value="full-time"> Full-Time (40H) </option>
-              <option value="freelance"> Freelance </option>
-            </select>
+            <Controller
+              name="rol_types"
+              control={control}
+              rules={{
+                required: 'This is required.',
+              }}
+              render={({ field }) => (
+                <Select label="Role type" {...field}>
+                  <Option value="part-time">Part-Time (20H)</Option>
+                  <Option value="part-time">Part-Time (40H)</Option>
+                  <Option value="part-time">Part-Time (60H)</Option>
+                </Select>
+              )}
+            />
           </div>
 
           <div className="flex flex-col">
-            <label htmlFor="job_title">Job Title</label>
-            <input
-              className="app-input"
-              type="title"
-              {...register('job_title', { required: 'This field is required' })}
+            <Controller
+              name="job_title"
+              control={control}
+              rules={{ required: 'This is required.' }}
+              render={({ field }) => <Input label="Job Title" {...field} />}
             />
             <ErrorMessage
               as={'span'}
@@ -77,14 +90,13 @@ export const JobDetails = ({
 
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex flex-col flex-grow">
-              <label htmlFor="title">Starting date</label>
-              <input
-                placeholder="Select a date"
-                className="app-input"
-                type={'date'}
-                {...register('starting_date', {
-                  required: 'This field is required',
-                })}
+              <Controller
+                name="starting_date"
+                control={control}
+                rules={{ required: 'This is required.' }}
+                render={({ field }) => (
+                  <Input type={'date'} label="Starting date" {...field} />
+                )}
               />
               <ErrorMessage
                 as={'span'}
@@ -94,93 +106,75 @@ export const JobDetails = ({
               />
             </div>
             <div className="flex flex-col flex-grow">
-              <label htmlFor="skills">Total years of experience*</label>
-              <select
-                defaultValue={''}
-                className="app-input "
-                {...register('job_details', {
-                  required: 'this is mandatory',
-                })}
-              >
-                <option value="" disabled>
-                  Select an option
-                </option>
-                <option value="part-time">
-                  {' '}
-                  Less than 1 year of experience
-                </option>
-                <option value="full-time">
-                  {' '}
-                  From 1 to 3 years of experience
-                </option>
-                <option value="freelance">
-                  {' '}
-                  From 3 to 6 years of experience{' '}
-                </option>
-                <option value="freelance">
-                  {' '}
-                  More than 6 years of experience{' '}
-                </option>
-              </select>
+              <Controller
+                name="years_experience"
+                control={control}
+                rules={{
+                  required: 'This is required.',
+                }}
+                render={({ field }) => (
+                  <Select label="Total years of experience" {...field}>
+                    <Option value="part-time">Part-Time (20H)</Option>
+                    <Option value="part-time">Part-Time (40H)</Option>
+                    <Option value="part-time">Part-Time (60H)</Option>
+                  </Select>
+                )}
+              />
             </div>
           </div>
 
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div className="flex flex-col flex-grow">
-              <label htmlFor="time_zone">Your Time Zone*</label>
-              <select
-                defaultValue={''}
-                className="app-input"
-                {...register('time_zone', {
-                  required: 'this is mandatory',
-                })}
-              >
-                <option value="" disabled>
-                  Select an option
-                </option>
-                <option value="part-time">
-                  {' '}
-                  (UTC - 07:00) America/Los_angeles{' '}
-                </option>
-                <option value="part-time">
-                  {' '}
-                  (UTC - 07:00) America/Los_angeles{' '}
-                </option>
-                <option value="part-time">
-                  {' '}
-                  (UTC - 07:00) America/Los_angeles{' '}
-                </option>
-              </select>
+              <Controller
+                name="time_zone"
+                control={control}
+                rules={{
+                  required: 'This is required.',
+                }}
+                render={({ field }) => (
+                  <Select label="Time Zone" {...field}>
+                    <Option value="part-time">
+                      {' '}
+                      (UTC - 07:00) America/Los_angeles{' '}
+                    </Option>
+                    <Option value="part-time">
+                      {' '}
+                      (UTC - 07:00) America/Los_angeles{' '}
+                    </Option>
+                    <Option value="part-time">
+                      {' '}
+                      (UTC - 07:00) America/Los_angeles{' '}
+                    </Option>
+                  </Select>
+                )}
+              />
             </div>
             <div className="flex flex-col flex-grow">
-              <label htmlFor="overlapping_hours">
-                Minimum overlapping hours
-              </label>
-              <select
-                defaultValue={''}
-                className="app-input"
-                {...register('overlapping_hours', {
-                  required: 'this is mandatory',
-                })}
-              >
-                <option value="" disabled>
-                  Select an option
-                </option>
-                <option value="part-time"> No overlap needed </option>
-                <option value="full-time"> No overlap needed </option>
-                <option value="freelance"> No overlap needed </option>
-              </select>
+              <Controller
+                name="overlapping_hours"
+                control={control}
+                rules={{
+                  required: 'This is required.',
+                }}
+                render={({ field }) => (
+                  <Select label="Minumin overlapping hours" {...field}>
+                    <Option value="part-time"> No overlap needed</Option>
+                    <Option value="part-time"> No overlap needed</Option>
+                    <Option value="part-time"> No overlap needed</Option>
+                  </Select>
+                )}
+              />
             </div>
           </div>
 
           <div className="flex flex-col">
-            <label htmlFor="job_description">Job Description</label>
-            <textarea
-              rows={5}
-              className="app-input"
-              {...register('job_description', {
-                required: 'This field is required',
-              })}
+            <Controller
+              name="job_description"
+              control={control}
+              rules={{ required: 'This is required.' }}
+              render={({ field }) => (
+                <Textarea label="Job Description" {...field} />
+              )}
             />
             <ErrorMessage
               as={'span'}
