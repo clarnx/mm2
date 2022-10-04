@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import en from '../../../locales/en/navbar';
 import es from '../../../locales/es/navbar';
+import Logo from '../../assets/logo/Logo';
 import LoginButton from '../../buttons/login/LoginButton';
 import LogoutButton from '../../buttons/logout/LogoutButton';
 
@@ -65,14 +66,16 @@ const Header: React.FC<IHeader> = ({ className, ...headerProps }) => {
     <header {...headerProps} className={`${className}`}>
       <Navbar fullWidth={true} className="">
         <div className="flex items-center justify-between text-blue-gray-900 max-w-[1550px] m-auto">
-          <Typography
-            as="a"
-            href="/"
-            variant="small"
-            className="mr-4 cursor-pointer py-1.5 font-normal"
-          >
-            <span>Momentum</span>
-          </Typography>
+          <div className="w-40">
+            <Typography
+              as="a"
+              href="/"
+              variant="small"
+              className="mr-4 cursor-pointer py-1.5 font-normal"
+            >
+              <Logo />
+            </Typography>
+          </div>
           <div className="flex items-center gap-4">
             <div className="hidden md:block text-right">{navList}</div>
             {isAuthenticated ? <LogoutButton /> : <LoginButton />}

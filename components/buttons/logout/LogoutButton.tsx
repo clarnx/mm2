@@ -9,7 +9,8 @@ const LogoutButton: React.FC<ILogoutButton> = ({ text = 'Logout' }) => {
   const { logout } = useAuth0();
   return (
     <Button
-      className="capitalize"
+      className="capitalize "
+      variant="outlined"
       size="sm"
       color="red"
       onClick={() => logout({ returnTo: window.location.origin })}
